@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blorbo</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <canvas class="webgl"></canvas>
+    <script type="module" src="./script.js"></script>
+    <div class="status">
+        <div class="statusBar">
+            <p>Hunger:</p>
+            <progress min="0" max="100" value="100" id="hungerProgress"></progress>
+        </div>
+    </div>
+    <dialog id="deathDialog">
+        <div class="dialogContent">
+            <h1>Blorbo Died!</h1>
+            <button>Try Again?</button>
+        </div>
+    </dialog>
+</body>
+<script>
+    let hungerProgress = document.getElementById("hungerProgress");
+    document.addEventListener("hungerChanged", (event) => {
+        hungerProgress.value = event.detail;
+    })
+    document.addEventListener("death", () => {
+        //  document.getElementById("deathDialog").showModal() 
+    })
+</script>
+
+</html>
