@@ -9,7 +9,7 @@ import { Food } from "./Food";
  * Base
  */
 // Debug
-const gui = new GUI();
+// const gui = new GUI();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -207,11 +207,17 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 let groundSize = 60;
 let groundPlane = new THREE.PlaneGeometry(groundSize, groundSize, 10);
-
-let groundMesh = new THREE.Mesh(
-  groundPlane,
-  new THREE.MeshStandardMaterial({ color: "#1e7e34" })
-);
+let debugObj = {
+  color: "#17642d",
+};
+let material = new THREE.MeshStandardMaterial({ color: debugObj.color });
+// gui
+//   .addColor(debugObj, "color")
+//   .name("Mesh Color")
+//   .onChange((materialValue) => {
+//     material.color.set(debugObj.color);
+//   });
+let groundMesh = new THREE.Mesh(groundPlane, material);
 groundMesh.receiveShadow = true;
 groundMesh.rotateX(-Math.PI / 2);
 scene.add(groundMesh);
