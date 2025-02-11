@@ -9,7 +9,7 @@ import { Food } from "./Food";
  * Base
  */
 // Debug
-const gui = new GUI();
+// const gui = new GUI();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -20,37 +20,8 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
 scene.add(ambientLight);
 const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
 directionalLight.castShadow = true;
-// directionalLight.shadow.mapSize.set(1024, 1024);
-// directionalLight.shadow.camera.far = 15;
-// directionalLight.shadow.camera.left = -7;
-// directionalLight.shadow.camera.top = 7;
-// directionalLight.shadow.camera.right = 7;
-// directionalLight.shadow.camera.bottom = -7;
 directionalLight.position.set(-3, 34, 39);
 scene.add(directionalLight);
-// let lightHelper = new THREE.DirectionalLightHelper(directionalLight);
-// scene.add(lightHelper);
-
-let lightPosition = gui.addFolder("LightPosition");
-lightPosition.add(directionalLight.position, "x").min(-100).max(100).step(1);
-lightPosition.add(directionalLight.position, "y").min(-100).max(100).step(1);
-lightPosition.add(directionalLight.position, "z").min(-100).max(100).step(1);
-let lightRotation = gui.addFolder("LightRotation");
-lightRotation
-  .add(directionalLight.rotation, "x")
-  .min(0)
-  .max(Math.PI * 2)
-  .step(0.01);
-lightRotation
-  .add(directionalLight.rotation, "y")
-  .min(0)
-  .max(Math.PI * 2)
-  .step(0.01);
-lightRotation
-  .add(directionalLight.rotation, "z")
-  .min(0)
-  .max(Math.PI * 2)
-  .step(0.01);
 
 const raycaster = new THREE.Raycaster();
 /**
@@ -81,22 +52,16 @@ gltfLoader.load(
     treeModel = gltf.scene;
     treeModel.scale.setScalar(25);
     treeModel.position.set(24, 1.5, -25);
-    gui.add(treeModel.position, "x");
-    gui.add(treeModel.position, "z");
     scene.add(treeModel);
     secondTree = gltf.scene.clone();
     secondTree.scale.setScalar(30);
     secondTree.position.set(-23, 1.5, -24);
     secondTree.rotateY(Math.PI / 4);
-    gui.add(secondTree.position, "x");
-    gui.add(secondTree.position, "z");
     scene.add(secondTree);
     thirdTree = gltf.scene.clone();
     thirdTree.scale.setScalar(20);
     thirdTree.position.set(-24, 1.5, 6);
     thirdTree.rotateY(Math.PI / 2);
-    gui.add(thirdTree.position, "x");
-    gui.add(thirdTree.position, "z");
     scene.add(thirdTree);
   },
   () => {},
@@ -112,8 +77,6 @@ gltfLoader.load(
     pine = gltf.scene.clone();
     pine.scale.setScalar(25);
     pine.position.set(-22, 1.5, 22);
-    gui.add(pine.position, "x");
-    gui.add(pine.position, "z");
     scene.add(pine);
   },
   () => {},
@@ -184,9 +147,6 @@ const camera = new THREE.PerspectiveCamera(
 );
 let camPos = 130;
 camera.position.set(camPos, camPos, camPos);
-gui.add(camera.position, "x");
-gui.add(camera.position, "y");
-gui.add(camera.position, "z");
 scene.add(camera);
 
 // Controls
@@ -207,9 +167,6 @@ renderer.setClearColor(rendererParameters.clearColor);
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-gui.addColor(rendererParameters, "clearColor").onChange(() => {
-  renderer.setClearColor(rendererParameters.clearColor);
-});
 let groundSize = 60;
 let groundPlane = new THREE.PlaneGeometry(groundSize, groundSize, 10);
 
