@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blorbo</title>
+  <script type="module" crossorigin src="./assets/index-WTLhS8p_.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-NhaAdqfF.css">
+</head>
+
+<body>
+    <canvas class="webgl"></canvas>
+    <div class="status">
+        <div class="food">
+            <div class="foodEntry">
+                <img src="./mushroom.png" alt="A mushroom represnting an available food to place" />
+            </div>
+            <div class="foodEntry">
+                <img src="./mushroom.png" alt="A mushroom represnting an available food to place" />
+            </div>
+            <div class="foodEntry">
+                <img src="./mushroom.png" alt="A mushroom represnting an available food to place" />
+            </div>
+        </div>
+        <div class="statusBar">
+            <p>Hunger:</p>
+            <progress min="0" max="100" value="100" id="hungerProgress"></progress>
+        </div>
+    </div>
+    <dialog id="deathDialog">
+        <div class="dialogContent">
+            <h1>Blorbo Died!</h1>
+            <button>Try Again?</button>
+        </div>
+    </dialog>
+</body>
+<script>
+    let currentFoodCount = 3;
+    let foodEntries = document.getElementsByClassName("foodEntry");
+    document.addEventListener("foodRemoved", (event) => {
+        currentFoodCount -= 1;
+        let idx = 0;
+        for (let entry of foodEntries) {
+            if (idx >= currentFoodCount) {
+                entry.classList.add("inactive")
+            }
+            idx += 1;
+        }
+    });
+    document.addEventListener("foodEaten", () => {
+        currentFoodCount += 1;
+        let idx = 0;
+        for (let entry of foodEntries) {
+            if (idx < currentFoodCount) {
+                entry.classList.remove("inactive")
+            }
+            idx += 1;
+        }
+    });
+
+    let hungerProgress = document.getElementById("hungerProgress");
+    document.addEventListener("hungerChanged", (event) => {
+        hungerProgress.value = event.detail;
+    })
+    document.addEventListener("death", () => {
+        //  document.getElementById("deathDialog").showModal() 
+    })
+</script>
+
+</html>
