@@ -98,7 +98,7 @@ export class Character {
     }
     if (this.characterMesh && this.shouldMove) {
       this.delta = (this.delta + this.speed) % 1;
-      if (this.delta >= 0.9) {
+      if (this.delta >= 0.75) {
         this.reachedFood();
       } else {
         this.characterMesh.position

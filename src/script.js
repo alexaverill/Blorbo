@@ -9,7 +9,7 @@ import { Food } from "./Food";
  * Base
  */
 // Debug
-// const gui = new GUI();
+const gui = new GUI();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -71,6 +71,7 @@ gltfLoader.load(
 );
 
 let pine;
+let pine2;
 gltfLoader.load(
   "tree_pineGroundB.glb",
   (gltf) => {
@@ -78,6 +79,60 @@ gltfLoader.load(
     pine.scale.setScalar(25);
     pine.position.set(-22, 1.5, 22);
     scene.add(pine);
+    pine2 = gltf.scene.clone();
+    pine2.scale.setScalar(18);
+    pine2.position.set(-23, 1.5, -8);
+    scene.add(pine2);
+  },
+  () => {},
+  (e) => {
+    console.log(e);
+  }
+);
+let log;
+gltfLoader.load(
+  "stump_oldTall.glb",
+  (gltf) => {
+    log = gltf.scene.clone();
+    log.scale.setScalar(25);
+    log.position.set(1, 1.5, -22);
+    log.rotateY(1.8);
+    gui.add(log.position, "x").min(-22).max(30).step(0.5);
+    gui.add(log.position, "z").min(-22).max(30).step(0.5);
+    gui
+      .add(log.rotation, "x")
+      .min(0)
+      .max(Math.PI * 2)
+      .step(0.1);
+    gui
+      .add(log.rotation, "y")
+      .min(0)
+      .max(Math.PI * 2)
+      .step(0.1);
+    gui
+      .add(log.rotation, "z")
+      .min(0)
+      .max(Math.PI * 2)
+      .step(0.1);
+    scene.add(log);
+  },
+  () => {},
+  (e) => {
+    console.log(e);
+  }
+);
+gltfLoader.load(
+  "grass.glb",
+  (gltf) => {
+    for (let x = 0; x < 40; x++) {
+      let grass = gltf.scene.clone();
+      grass.scale.setScalar(10);
+      let xPos = Math.random() * 50 - 22;
+      let zPos = Math.random() * 50 - 22;
+      grass.position.set(xPos, 1.5, zPos);
+      grass.rotateY(Math.random() * 2);
+      scene.add(grass);
+    }
   },
   () => {},
   (e) => {
