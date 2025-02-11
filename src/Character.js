@@ -17,7 +17,7 @@ export class Character {
     this.scene = scene;
     const gltfLoader = new GLTFLoader();
     const model = gltfLoader.load(
-      "/BLORB.glb",
+      "BLORB.glb",
       (gltf) => {
         this.characterMesh = gltf.scene;
         this.characterMesh.castsShadow = true;

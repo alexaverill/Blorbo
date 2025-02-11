@@ -34,7 +34,7 @@ const sizes = {
 let foodModel;
 let gltfLoader = new GLTFLoader();
 gltfLoader.load(
-  "/mushroom.glb",
+  "mushroom.glb",
   (gltf) => {
     foodModel = gltf.scene;
   },
@@ -47,7 +47,7 @@ let treeModel;
 let secondTree;
 let thirdTree;
 gltfLoader.load(
-  "/tree_oak_dark.glb",
+  "tree_oak_dark.glb",
   (gltf) => {
     treeModel = gltf.scene;
     treeModel.scale.setScalar(25);
