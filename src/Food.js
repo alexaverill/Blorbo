@@ -23,6 +23,7 @@ export class Food {
   getAte() {
     this.remove(this.foodMesh.position);
     this.scene.remove(this.foodMesh);
+    document.dispatchEvent(new CustomEvent("foodEaten"));
   }
   update(time) {
     if (time - this.lastUpdate > this.updateIntervalSeconds) {

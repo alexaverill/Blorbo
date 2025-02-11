@@ -154,6 +154,10 @@ const removeFood = (event) => {
   food.splice(removeIndex, 1);
 };
 const addFood = (event) => {
+  if (food.length >= 3) {
+    return;
+  }
+  document.dispatchEvent(new CustomEvent("foodRemoved"));
   let xPos = (event.clientX / window.innerWidth) * 2 - 1;
   let yPos = -(event.clientY / window.innerHeight) * 2 + 1;
   pointer.x = xPos;
@@ -233,7 +237,6 @@ const clock = new THREE.Clock();
 updateAllMaterials();
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-
   // Update controls
   controls.update();
   for (let entry of food) {

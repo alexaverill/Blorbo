@@ -12,6 +12,17 @@
     <canvas class="webgl"></canvas>
     <script type="module" src="./script.js"></script>
     <div class="status">
+        <div class="food">
+            <div class="foodEntry">
+                <img src="./mushroom.png" alt="A mushroom represnting an available food to place" />
+            </div>
+            <div class="foodEntry">
+                <img src="./mushroom.png" alt="A mushroom represnting an available food to place" />
+            </div>
+            <div class="foodEntry">
+                <img src="./mushroom.png" alt="A mushroom represnting an available food to place" />
+            </div>
+        </div>
         <div class="statusBar">
             <p>Hunger:</p>
             <progress min="0" max="100" value="100" id="hungerProgress"></progress>
@@ -25,6 +36,29 @@
     </dialog>
 </body>
 <script>
+    let currentFoodCount = 3;
+    let foodEntries = document.getElementsByClassName("foodEntry");
+    document.addEventListener("foodRemoved", (event) => {
+        currentFoodCount -= 1;
+        let idx = 0;
+        for (let entry of foodEntries) {
+            if (idx >= currentFoodCount) {
+                entry.classList.add("inactive")
+            }
+            idx += 1;
+        }
+    });
+    document.addEventListener("foodEaten", () => {
+        currentFoodCount += 1;
+        let idx = 0;
+        for (let entry of foodEntries) {
+            if (idx < currentFoodCount) {
+                entry.classList.remove("inactive")
+            }
+            idx += 1;
+        }
+    });
+
     let hungerProgress = document.getElementById("hungerProgress");
     document.addEventListener("hungerChanged", (event) => {
         hungerProgress.value = event.detail;

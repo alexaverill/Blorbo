@@ -1,12 +1,13 @@
 import * as THREE from "three";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { map } from "./map";
 export class Character {
   lastUpdate = 0;
   updateIntervalSeconds = 0.5;
   characterMesh;
   hunger = 100;
-  hungerDecrease = 20;
+  hungerDecrease = 0.5;
   thirst = 100;
   thirstDecrease = 10;
   speed = 1;
@@ -51,7 +52,20 @@ export class Character {
   newX = 0;
   newZ = 0;
   foodPosition = null;
-  startPosition;
+  startPosition = new THREE.Vector3(0, this.yPos, 0);
+  newPosition = new THREE.Vector3(0, this.yPos, 0);
+  shouldMove = false;
+  delta = 0;
+  speed = 0;
+  reachedFood() {
+    this.shouldMove = false;
+    this.eatFood(this.foodPosition.food[0]);
+    this.foodPosition = null;
+    this.startPosition = this.characterMesh.position;
+    this.characterMesh.position.copy(this.startPosition);
+    this.delta = 0;
+    return;
+  }
   update(time, food) {
     //console.log(time);
     if (time - this.lastUpdate > this.updateIntervalSeconds) {
@@ -63,39 +77,34 @@ export class Character {
             let distance = this.characterMesh.position.distanceTo(position);
             if (this.foodPosition == null) {
               this.foodPosition = { position, distance, food };
-            } else if (distance < foodPosition.distance) {
+              this.newPosition.x = this.foodPosition.position.x;
+              this.newPosition.z = this.foodPosition.position.z;
+              this.shouldMove = true;
+              this.speed = 0.001;
+            } else if (distance < this.foodPosition.distance) {
               this.foodPosition = { position, distance, food };
+              this.newPosition.x = this.foodPosition.position.x;
+              this.newPosition.z = this.foodPosition.position.z;
+              this.shouldMove = true;
+              this.speed = 0.001; // map(distance, 0, 70, 0.002, 0.003);
             }
           }
         }
-        if (this.foodPosition.distance <= 1.1) {
-          this.eatFood(this.foodPosition.food[0]);
-          this.foodPosition = null;
-          return;
-        }
-        this.characterMesh.lookAt(
-          new THREE.Vector3(
-            this.foodPosition.position.x,
-            this.yPos,
-            this.foodPosition.position.z
-          )
-        );
-        let newVec = new THREE.Vector3().copy(this.foodPosition.position);
-        // let direction = newVec
-        //   .sub(this.characterMesh.position)
-        //   .normalize()
-        //   .multiplyScalar(this.speed);
-        this.newX = this.foodPosition.position.x;
-        this.newZ = this.foodPosition.position.z;
+
+        this.characterMesh.lookAt(this.newPosition);
       }
 
       this.lastUpdate = time;
     }
-    if (this.characterMesh) {
-      this.characterMesh.position.lerp(
-        new THREE.Vector3(this.newX, this.yPos, this.newZ),
-        0.01
-      );
+    if (this.characterMesh && this.shouldMove) {
+      this.delta = (this.delta + this.speed) % 1;
+      if (this.delta >= 0.9) {
+        this.reachedFood();
+      } else {
+        this.characterMesh.position
+          .copy(this.startPosition)
+          .lerp(this.newPosition, this.delta);
+      }
     }
   }
 }
