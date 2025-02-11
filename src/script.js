@@ -97,23 +97,6 @@ gltfLoader.load(
     log.scale.setScalar(25);
     log.position.set(1, 1.5, -22);
     log.rotateY(1.8);
-    gui.add(log.position, "x").min(-22).max(30).step(0.5);
-    gui.add(log.position, "z").min(-22).max(30).step(0.5);
-    gui
-      .add(log.rotation, "x")
-      .min(0)
-      .max(Math.PI * 2)
-      .step(0.1);
-    gui
-      .add(log.rotation, "y")
-      .min(0)
-      .max(Math.PI * 2)
-      .step(0.1);
-    gui
-      .add(log.rotation, "z")
-      .min(0)
-      .max(Math.PI * 2)
-      .step(0.1);
     scene.add(log);
   },
   () => {},
