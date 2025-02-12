@@ -28,6 +28,7 @@ body {
     align-items: center;
     font-family: sans-serif;
     gap: 4rem;
+    filter: drop-shadow(0 15px 23px #000);
 }
 
 .food {
@@ -37,6 +38,7 @@ body {
 
 .foodEntry {
     width: 64px;
+    filter: drop-shadow(.5px 2px 2px #000);
 }
 
 .foodEntry>img {

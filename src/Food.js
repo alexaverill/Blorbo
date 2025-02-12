@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 export class Food {
-  health = 100;
+  health = 15;
   healthDecrement = 0;
   lastUpdate = 0;
   updateIntervalSeconds = 5;
