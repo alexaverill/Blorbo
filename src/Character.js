@@ -26,8 +26,11 @@ export class Character {
         this.characterMesh.castsShadow = true;
         this.characterMesh.position.y = this.yPos;
         // mesh.scale.setScalar(0.025);
+        this.characterMesh.castShadow = true;
+        this.characterMesh.receiveShadow = true;
         scene.add(this.characterMesh);
         //scene.add(gltf.scene);
+        this.updateAllMaterials();
       },
       () => {},
       (e) => {
@@ -35,6 +38,14 @@ export class Character {
       }
     );
     this.reachedFood.bind(this);
+  }
+  updateAllMaterials() {
+    this.scene.traverse((child) => {
+      if (child.isMesh) {
+        child.receiveShadow = true;
+        child.castShadow = true;
+      }
+    });
   }
   eatFood(food) {
     this.hunger = Math.min(this.hunger + food.health, 100);

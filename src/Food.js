@@ -15,7 +15,17 @@ export class Food {
     this.foodMesh.position.x = position.x;
     this.foodMesh.position.z = position.z;
     this.foodMesh.scale.setScalar(20);
+
     this.scene.add(this.foodMesh);
+    this.updateAllMaterials();
+  }
+  updateAllMaterials() {
+    this.scene.traverse((child) => {
+      if (child.isMesh) {
+        child.receiveShadow = true;
+        child.castShadow = true;
+      }
+    });
   }
   map(x, in_min, in_max, out_min, out_max) {
     return ((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;

@@ -5,23 +5,48 @@ import { Character } from "./Character";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 import { Food } from "./Food";
+import { addPositionRotationGui } from "./utils";
+import { update } from "three/examples/jsm/libs/tween.module.js";
 /**
  * Base
  */
 // Debug
-// const gui = new GUI();
+const gui = new GUI();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
-const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+const ambientLight = new THREE.AmbientLight(0xffffff, 3.4);
 scene.add(ambientLight);
 const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
 directionalLight.castShadow = true;
-directionalLight.position.set(-3, 34, 39);
+directionalLight.position.set(-30, 38, 45);
+directionalLight.shadow.mapSize.set(1024, 1024);
+directionalLight.shadow.camera.far = 1500;
+directionalLight.shadow.camera.left = -40;
+directionalLight.shadow.camera.top = 40;
+directionalLight.shadow.camera.right = 40;
+directionalLight.shadow.camera.bottom = -40;
 scene.add(directionalLight);
+
+// const directionalLightCameraHelper = new THREE.CameraHelper(
+//   directionalLight.shadow.camera
+// );
+// scene.add(directionalLightCameraHelper);
+
+const light = new THREE.PointLight(0xffffff, 3.1, 0, 0);
+light.position.set(0, 50, 0);
+scene.add(light);
+let lightHelper = new THREE.PointLightHelper(light);
+scene.add(lightHelper);
+addPositionRotationGui(gui, light, -100, 100, 0.1);
+gui.add(light, "intensity").min(0).max(100).step(0.1);
+// const secondaryLight = new THREE.DirectionalLight(0xffffff, 5);
+// directionalLight.castShadow = true;
+// directionalLight.position.set(-3, 34, 39);
+// scene.add(directionalLight);
 
 const raycaster = new THREE.Raycaster();
 /**
@@ -63,6 +88,7 @@ gltfLoader.load(
     thirdTree.position.set(-24, 1.5, 6);
     thirdTree.rotateY(Math.PI / 2);
     scene.add(thirdTree);
+    updateAllMaterials();
   },
   () => {},
   (e) => {
@@ -83,6 +109,7 @@ gltfLoader.load(
     pine2.scale.setScalar(18);
     pine2.position.set(-23, 1.5, -8);
     scene.add(pine2);
+    updateAllMaterials();
   },
   () => {},
   (e) => {
@@ -115,6 +142,7 @@ gltfLoader.load(
       grass.position.set(xPos, 1.5, zPos);
       grass.rotateY(Math.random() * 2);
       scene.add(grass);
+      updateAllMaterials();
     }
   },
   () => {},
@@ -127,7 +155,6 @@ function updateAllMaterials() {
     if (child.isMesh) {
       child.receiveShadow = true;
       child.castShadow = true;
-      // Activate shadow here
     }
   });
 }
@@ -204,6 +231,8 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setClearColor(rendererParameters.clearColor);
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 let groundSize = 60;
 let groundPlane = new THREE.PlaneGeometry(groundSize, groundSize, 10);
@@ -235,7 +264,10 @@ let character = new Character(scene);
  * Animate
  */
 const clock = new THREE.Clock();
-updateAllMaterials();
+let debug = {
+  updateMat: updateAllMaterials,
+};
+gui.add(debug, "updateMat");
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
   // Update controls
