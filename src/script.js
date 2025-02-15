@@ -11,7 +11,7 @@ import { update } from "three/examples/jsm/libs/tween.module.js";
  * Base
  */
 // Debug
-const gui = new GUI();
+//const gui = new GUI();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -39,10 +39,10 @@ scene.add(directionalLight);
 const light = new THREE.PointLight(0xffffff, 3.1, 0, 0);
 light.position.set(0, 50, 0);
 scene.add(light);
-let lightHelper = new THREE.PointLightHelper(light);
-scene.add(lightHelper);
-addPositionRotationGui(gui, light, -100, 100, 0.1);
-gui.add(light, "intensity").min(0).max(100).step(0.1);
+// let lightHelper = new THREE.PointLightHelper(light);
+// scene.add(lightHelper);
+// addPositionRotationGui(gui, light, -100, 100, 0.1);
+// gui.add(light, "intensity").min(0).max(100).step(0.1);
 // const secondaryLight = new THREE.DirectionalLight(0xffffff, 5);
 // directionalLight.castShadow = true;
 // directionalLight.position.set(-3, 34, 39);
@@ -264,10 +264,6 @@ let character = new Character(scene);
  * Animate
  */
 const clock = new THREE.Clock();
-let debug = {
-  updateMat: updateAllMaterials,
-};
-gui.add(debug, "updateMat");
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
   // Update controls
